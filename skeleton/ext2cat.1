@@ -7,10 +7,12 @@ and prints it to stdout. This program can fully retrieve large files that
 do not entirely fit into a direct block. 
 
 .SH DESIGN DECISIONS
-To allow for the driver to fully retrieve files too large
-to fit in a direct block, the driver reads all indirect blocks
-block, until actual file size is reached or all 255 indirect blocks
-are read.
+To allow for the driver to retrieve files too large
+to fit in all the direct blocks, the driver reads the first level of 
+indirect blocks, until actual file size is reached or all 255 indirect blocks
+have been read. We only decided to check through one set of the indirect
+blocks because all the files fit into both the direct and first set of indirect
+blocks.
 
 .SH AUTHOR
 Irsal Jasebel Alsanea, Patrick Hayes, Felix Hu

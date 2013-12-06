@@ -3,5 +3,9 @@ Group: fhh564+ija144+pjh693
 
 All basic and high level accessors are functional and contain no references to the _ref functions.
 
+The design decisions can be found in each man file, viewed through the commands:
+man ./ext2cat.1
+man ./ext2_access.1
+
 Extra Credit:
 ext2_cat can now fully retrieve files too large to fit into a direct block.

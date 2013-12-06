@@ -6,8 +6,13 @@ ext2_access is a read-only driver for ext2 that includes multiple basic and
 higher level accessors.
 
 .SH DESIGN DECISIONS
-We tried to use as many definitions from ext2fs.h as possible to reduce
-complexity.
+Given a full file path, we found the inode of the file by searching each
+folder level. The split_path function returns each folder or filename in an
+array, and the program iterates over every char of the file path to find the
+number of folder levels (designated by forward slashes). It searches through
+every inode of every folder, kept together by a linked list of directory
+entries, until the file is or is not found. We tried to use as many
+definitions from ext2fs.h as possible to reduce complexity.
 
 .SH AUTHOR
 Irsal Jasebel Alsanea, Patrick Hayes, Felix Hu
