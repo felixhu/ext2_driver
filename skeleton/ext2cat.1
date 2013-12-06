@@ -1,0 +1,16 @@
+.TH ext2_cat
+.SH NAME
+ext2_access \- Prints file content to stdout
+.SH DESCRIPTION
+A basic program that retrieves the content of a file from an ext2 image
+and prints it to stdout. This program can fully retrieve large files that
+do not entirely fit into a direct block. 
+
+.SH DESIGN DECISIONS
+To allow for the driver to fully retrieve files too large
+to fit in a direct block, the driver reads all indirect blocks
+block, until actual file size is reached or all 255 indirect blocks
+are read.
+
+.SH AUTHOR
+Irsal Jasebel Alsanea, Patrick Hayes, Felix Hu
