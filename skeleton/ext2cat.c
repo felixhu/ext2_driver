@@ -41,9 +41,32 @@ int main(int argc, char ** argv) {
         bytes_read += bytes_to_read;
     }
 
+    //if number of bytes read is less than size, then move to first set of indirect blocks
+    if (bytes_read < size)
+    {
+        //get indirect block with array of block numbers
+        void * indirectBlock = get_block(fs, target_ino->i_block[EXT2_IND_BLOCK]);
+        __u32* indirectBlockNoArray = (__u32*)indirectBlock;
+    
+        //keep reading blocks until you reach file size, or finish reading all 255 indirect blocks
+        int indirectBlocksRead = 0;
+        while (bytes_read < size && indirectBlocksRead < 255)
+        {
+            bytes_left = size - bytes_read;
+            if (bytes_left == 0) break;
+            __u32 bytes_to_read = bytes_left > block_size ? block_size : bytes_left;
+            void * block = get_block(fs, *indirectBlockNoArray);
+            memcpy(buf + bytes_read, block, bytes_to_read);
+            bytes_read += bytes_to_read;
+            indirectBlockNoArray++;
+            indirectBlocksRead++;
+        }
+    }
+
+    //stop after one set of indirect blocks
     write(1, buf, bytes_read);
     if (bytes_read < size) {
-        printf("%s: file uses indirect blocks. output was truncated!\n",
+        printf("%s: file uses more than one set of indirect blocks. output was truncated!\n",
                argv[0]);
     }
 
